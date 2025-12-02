@@ -4,7 +4,7 @@ Es una pagina web diseñada con el fin de manejar los ingresos y gastos
 ## 👨‍💻 Autor
 Stiven Ramirez
 
-## 🛠 Lenguajes utilizadas
+## 🛠 Lenguajes utilizados
 - HTML
 - CSS
 - JAVASCRIPT
