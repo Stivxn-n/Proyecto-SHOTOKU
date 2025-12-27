@@ -3,30 +3,25 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>SHOTOKU</title>
+  <title>Shotoku</title>
 
-  <!-- estilos -->
   <link rel="stylesheet" href="styles.css">
-
-  <!-- íconos -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
-  <!-- Chart.js -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-  <!-- jsPDF + autoTable (para exportar PDF) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js" defer></script>
 </head>
 
 <body>
   <div class="container">
+
+    <!-- HEADER -->
     <header>
       <div class="header-left">
         <i class="bi bi-wallet2 logo"></i>
         <h1>SHOTOKU</h1>
       </div>
-
       <div class="header-right">
         <button id="themeToggle" class="icon-btn">
           <i class="bi bi-moon-stars" id="themeIcon"></i>
@@ -36,75 +31,103 @@
 
     <section class="card">
 
-      <form id="entryForm" autocomplete="off">
+      <!-- INDICADOR EDICIÓN -->
+      <div id="editIndicator" class="chip" style="display:none;margin-bottom:10px;">
+        ✏️ Editando entrada
+      </div>
+
+      <!-- FORMULARIO -->
+      <form id="entryForm">
+
         <div>
-          <label for="type">Tipo</label>
-          <select id="type" required>
+          <label>Tipo</label>
+          <select id="type">
             <option value="income">Ingreso</option>
             <option value="expense">Gasto</option>
           </select>
         </div>
 
         <div>
-          <label for="amount">Monto</label>
+          <label>Monto</label>
           <div class="amount-row">
-            <input id="amount" type="number" step="0.01" min="0" required />
+            <input id="amount" type="number" step="0.01" min="0" required>
             <button type="button" id="add100" class="secondary">+100</button>
           </div>
         </div>
 
+        <!-- CATEGORÍA CON OPCIONES -->
         <div>
-          <label for="category">Categoría</label>
-          <input id="category" type="text" placeholder="Ej: Sueldo, Comida" />
+          <label>Categoría</label>
+          <input
+            id="category"
+            list="categoryList"
+            placeholder="Ej: Comida, Sueldo, Ropa"
+            required
+          >
+          <datalist id="categoryList">
+            <option value="Comida">
+            <option value="Sueldo">
+            <option value="Ropa">
+            <option value="Transporte">
+            <option value="Servicios">
+            <option value="Mercado">
+            <option value="Salud">
+            <option value="Educación">
+            <option value="Entretenimiento">
+            <option value="Otros">
+          </datalist>
         </div>
 
         <div>
-          <label for="date">Fecha</label>
-          <input id="date" type="date" />
+          <label>Fecha</label>
+          <input id="date" type="date">
         </div>
 
+        <!-- DESCRIPCIÓN LIBRE -->
         <div class="full">
-          <label for="description">Descripción</label>
-          <input id="description" type="text" placeholder="Descripción breve" />
+          <label>Descripción</label>
+          <input
+            id="description"
+            placeholder="Describe libremente el gasto o ingreso (opcional)"
+          >
         </div>
+
         <div class="full actions">
-          <button type="submit">Agregar</button>
-          <button id="clearBtn" type="button" class="secondary"></button>
-
-          <!-- <button id="exportCSVBtn" type="button" class="secondary">Exportar CSV</button> -->
-
-          <button id="exportPDFBtn" type="button" class="secondary">Exportar PDF</button>
+          <button type="submit">Guardar</button>
+          <button type="button" id="clearBtn" class="secondary">Borrar todo</button>
+          <button type="button" id="exportPDFBtn" class="secondary">Exportar PDF</button>
         </div>
+
       </form>
 
+      <!-- RESUMEN -->
       <div class="summary">
         <div class="item">
-          <div class="muted small">Total Ingresos</div>
-          <div class="amount" id="totalIncome">COP $0.00</div>
+          <div class="muted small">Ingresos</div>
+          <div id="totalIncome" class="amount">COP $0</div>
         </div>
-
         <div class="item">
-          <div class="muted small">Total Gastos</div>
-          <div class="amount" id="totalExpense">COP $0.00</div>
+          <div class="muted small">Gastos</div>
+          <div id="totalExpense" class="amount">COP $0</div>
         </div>
-
         <div class="item">
           <div class="muted small">Balance</div>
-          <div class="amount" id="balance">COP $0.00</div>
+          <div id="balance" class="amount">COP $0</div>
         </div>
       </div>
 
+      <!-- GRÁFICA -->
       <div class="chart-card">
         <canvas id="summaryChart"></canvas>
       </div>
 
+      <!-- TABLA -->
       <div class="card">
         <div class="controls">
-          <div class="flex">
-            <div class="chip" id="filterMonth">Mes: Todos</div>
-            <select id="monthFilter"><option value="all">Todos</option></select>
-          </div>
-          <input id="search" placeholder="Buscar" />
+          <select id="monthFilter">
+            <option value="all">Todos</option>
+          </select>
+          <input id="search" placeholder="Buscar">
         </div>
 
         <table id="entriesTable">
@@ -121,12 +144,18 @@
           <tbody></tbody>
         </table>
       </div>
+
+      <!-- TOTALES POR CATEGORÍA -->
+      <div class="card">
+        <h3>Totales por categoría</h3>
+        <ul id="categoryTotals"></ul>
+      </div>
+
     </section>
   </div>
 
   <div id="toast" class="toast"></div>
 
-  <!-- ARCHIVO JS CORREGIDO -->
-  <script src="app.js"></script>
+  <script src="app.js" defer></script>
 </body>
 </html>
