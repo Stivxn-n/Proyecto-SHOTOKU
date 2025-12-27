@@ -1,64 +1,253 @@
+/* ===============================
+   VARIABLES – MODO CLARO
+================================ */
 :root{
-  --bg:#b4b4b4;
+  --bg:#f3f4f6;
   --card:#ffffff;
-  --accent:#212027;
-  --muted:#191a1b;
+  --accent:#1f2937;
+  --muted:#6b7280;
+
+  /* NO TOCAR – gráficos */
   --green:#16a34a;
-  --red:#ef4444;
-  --shadow: 0 6px 18px rgba(16,24,40,0.06);
+  --red:#ff0000;
+
+  --border:#e5e7eb;
+  --shadow:0 6px 18px rgba(0,0,0,.08);
 }
 
-body.dark {
-  --bg:#12294d;
-  --card:#0e1625;
-  --accent:#8b5cf6;
-  --muted:#161a1f;
-  --green:#0fe65d;
-  --red:#fc0a2e71;
-  --shadow: 0 10px 30px rgba(7, 16, 56, 0.6);
-  color: #7ba1cc;
+/* ===============================
+   VARIABLES – MODO OSCURO
+================================ */
+body.dark{
+  --bg:#0f172a;
+  --card:#1e293b;
+  --accent:#7c7a7a;
+  --muted:#9ca3af;
+
+  /* NO TOCAR – gráficos */
+  --green:#22c55e;
+  --red:#ff0000;
+
+  --border:#334155;
+  --shadow:0 10px 30px rgba(0,0,0,.6);
 }
 
-*{box-sizing:border-box;font-family:Inter,system-ui;}
-body{margin:0;background:var(--bg);color:inherit}
-.container{max-width:980px;margin:28px auto;padding:20px}
+/* ===============================
+   RESET
+================================ */
+*{
+  box-sizing:border-box;
+  font-family:Inter,system-ui,Segoe UI,Roboto,Arial;
+}
 
-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
-.header-left{display:flex;align-items:center;gap:10px}
-.logo{font-size:22px;color:var(--accent)}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--accent);
+  transition:background .25s ease,color .25s ease;
+}
 
-.card{background:var(--card);padding:16px;border-radius:12px;box-shadow:var(--shadow);margin-top:14px}
+.container{
+  max-width:980px;
+  margin:28px auto;
+  padding:20px;
+}
 
-form{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+/* ===============================
+   HEADER
+================================ */
+header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:18px;
+}
+
+.header-left{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.logo{
+  font-size:22px;
+  color:var(--accent);
+}
+
+/* ===============================
+   CARDS
+================================ */
+.card{
+  background:var(--card);
+  padding:16px;
+  border-radius:12px;
+  box-shadow:var(--shadow);
+  margin-top:14px;
+}
+
+/* ===============================
+   FORMULARIO
+================================ */
+form{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
 .full{grid-column:1/-1}
 
-input,select{padding:10px;border-radius:8px;border:1px solid #e6e9ef;background:transparent;color:inherit}
+label{
+  font-size:13px;
+  color:var(--muted);
+  margin-bottom:4px;
+  display:block;
+}
 
-button{padding:10px 12px;border-radius:8px;border:0;background:var(--accent);color:white;font-weight:600;cursor:pointer}
-button.secondary{background:#eef2ff;color:var(--accent)}
+input,select{
+  width:100%;
+  padding:10px;
+  border-radius:8px;
+  border:1px solid var(--border);
+  background:transparent;
+  color:inherit;
+}
 
-.amount-row{display:flex;gap:6px}
-.actions{display:flex;gap:10px}
+input:focus,select:focus{
+  outline:none;
+  border-color:var(--accent);
+}
 
-.summary{display:flex;gap:12px;margin-top:16px}
-.summary .item{flex:1;text-align:center;padding:12px;background:var(--card);border-radius:10px;box-shadow:var(--shadow)}
-.amount{font-size:18px;font-weight:700}
+.amount-row{
+  display:flex;
+  gap:6px;
+}
 
-.controls{display:flex;gap:10px;align-items:center;margin-bottom:10px}
-.chip{background:#f3f4f6;padding:6px 10px;border-radius:20px;font-size:13px}
+.actions{
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
 
-table{width:100%;border-collapse:collapse}
-th,td{padding:10px;border-bottom:1px solid #e5e7eb}
+/* ===============================
+   BOTONES
+================================ */
+button{
+  padding:10px 14px;
+  border-radius:8px;
+  border:none;
+  background:var(--accent);
+  color:#fff;
+  font-weight:600;
+  cursor:pointer;
+}
 
-.type-income{color:var(--green);font-weight:700}
-.type-expense{color:var(--red);font-weight:700}
+button.secondary{
+  background:transparent;
+  color:var(--accent);
+  border:1px solid var(--border);
+}
 
-.chart-card{background:var(--card);padding:12px;border-radius:12px;box-shadow:var(--shadow)}
-canvas{max-height:260px;width:100%!important}
+/* ===============================
+   RESUMEN
+================================ */
+.summary{
+  display:flex;
+  gap:12px;
+  margin-top:16px;
+}
 
+.summary .item{
+  flex:1;
+  text-align:center;
+  padding:12px;
+  background:var(--card);
+  border-radius:10px;
+  box-shadow:var(--shadow);
+}
+
+.amount{
+  font-size:18px;
+  font-weight:700;
+}
+
+/* balance dinámico */
+.balance-positive{color:var(--green)}
+.balance-negative{color:var(--red)}
+.balance-zero{color:var(--accent)}
+
+/* ===============================
+   TABLA
+================================ */
+.controls{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  margin-bottom:10px;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+th,td{
+  padding:10px;
+  border-bottom:1px solid var(--border);
+  font-size:14px;
+}
+
+.type-income{
+  color:var(--green);
+  font-weight:700;
+}
+
+.type-expense{
+  color:var(--red);
+  font-weight:700;
+}
+
+/* ===============================
+   GRÁFICA
+================================ */
+.chart-card{
+  background:var(--card);
+  padding:12px;
+  border-radius:12px;
+  box-shadow:var(--shadow);
+}
+
+canvas{
+  max-height:260px;
+  width:100%!important;
+}
+
+/* ===============================
+   EDICIÓN ACTIVA
+================================ */
+.editing{
+  border:2px dashed var(--accent);
+}
+
+/* ===============================
+   TOAST
+================================ */
 .toast{
-  position:fixed;top:20px;right:20px;
-  background:#111827;color:white;
-  padding:12px 16px;border-radius:10px;font-weight:600;
-  display:none;z-index:9999;
+  position:fixed;
+  top:20px;
+  right:20px;
+  background:#111827;
+  color:#e5e7eb;
+  padding:12px 16px;
+  border-radius:10px;
+  font-weight:600;
+  display:none;
+  z-index:9999;
+}
+
+/* ===============================
+   RESPONSIVE (ORIGINAL)
+================================ */
+@media(max-width:720px){
+  form{grid-template-columns:1fr}
+  .summary{flex-direction:column}
 }
